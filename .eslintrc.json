@@ -1,0 +1,6 @@
+{
+  "extends": "react-app", //to extend the default eslint behaviour with install react app eslint
+  "rules": {
+    "no-unused-vars": "warn"
+  }
+}
