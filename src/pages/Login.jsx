@@ -11,7 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState("deeksha@example.com");
   const [password, setPassword] = useState("qwerty");
 
-  const { user, isAuthenticated, login } = useAuth();
+  const {isAuthenticated, login } = useAuth();
   // console.log("login", login);
 
   useEffect(() => {
