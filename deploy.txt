@@ -1,0 +1,133 @@
+Steps followed to deploy task4-todo-mern
+
+1.netlify for frontend
+2.render for backend
+3.github link:https://github.com/deeksha-code/task4-todo-MERN
+  frontend folder:todolist
+  backend folder:server
+
+backend deployment using render
+url:https://dashboard.render.com/web/srv-ctq1roij1k6c739ofo30
+ 1.go to dashboard
+ 2.click on new webservice
+ 3.provide the github url
+ 4.click on connect
+ 5.after that mention root directory(ex:server),build command(yarn),start command(ex:node index.js),create env variable  if required
+ and later click on deploy web service
+ 6.To connect to database securely add the IP addresses in the network access of the security tab in mongo db cluster(https://cloud.mongodb.com/v2/65410bd4550a5b5001296a14#/security/network/accessList)
+  Ip addresses will be available in connect tab of render dashboard
+    for example:Outbound
+    Static Outbound IP Addresses
+    Network requests from your service to the public internet will come from one of the following IP addresses.
+
+    100.20.92.101
+    44.225.181.72
+    44.227.217.144
+ 7.after successful deployment will get an url like this https://task4-todo-mern.onrender.com/, test the url different endpoints using postman
+
+
+ 8.points to be noted: while connecting to database give the database name in the url 
+   ex:const MONGO_URI = "mongodb+srv://deekshashetty736:liQEsHPRTvrM7Lrj@cluster0.ardch.mongodb.net/todo?retryWrites=true&w=majority"; // Added database name
+   todo is the database
+
+ Frontend deployment using netlify
+ Update the backend Axios requests to align with the deployed Render URL.
+ 1.go to the website https://app.netlify.com/teams/deeksha-code/sites amd click on add new site,cilck on existing new project and then click github,
+ select project repository,enter the site name,
+ fill the below details
+   Runtime-Not set
+   Base directory-todolist
+   Package directory-Not set
+   Build command-npm run build
+   Publish directory-todolist/build
+   Functions directory-todolist/netlify/functions
+   add environment variables
+2.click on deploy
+3.If thed deployment is successful you will get an deployed url 
+
+
+creating mongodb cluster:
+1.only one cluster can be crated at a time(now for creating worldwise cluster delete todo)
+2.create mo cluster because it is free,after creating cluster connect using mongodb compass
+for ex: mongodb+srv://deekshashetty736:liQEsHPRTvrM7Lrj@cluster0.ardch.mongodb.net/
+3.If you want to change the password ,go to database access and can edit it there.
+
+
+1. Accessibility from Anywhere
+MongoDB Cluster (mongodb+srv://...): A MongoDB cluster (hosted on services like MongoDB Atlas) is a cloud-based database that can be accessed from anywhere, 
+even when the application is deployed to the cloud. This makes it suitable for production environments.
+Local Database (mongodb://localhost:27017): A local MongoDB instance can only be accessed from your local machine or a specific network. 
+It is not accessible remotely, which would cause issues if your application is hosted on Netlify, Render, or any cloud service.
+
+
+link to view all the databases
+https://cloud.mongodb.com/v2/65410bd4550a5b5001296a14#/metrics/replicaSet/67742d0e901d524b539de088/explorer/todo/items/find
+
+
+
+
+
+
+why the Ip address whitlisting in datbase is important,the below is the example scenario
+
+
+Scenario: Accessing a Weather API with IP Whitelisting
+Context
+You’ve deployed a backend Node.js service on Render. Your service needs to fetch weather data from a Weather API (e.g., OpenWeatherMap), but the API has a security rule:
+
+"Only allow requests from trusted IP addresses."
+
+Setup
+The Weather API provider asks you to provide the IP addresses from which your service will send requests.
+Render provides you with these static outgoing IP addresses:
+100.20.92.101
+44.225.181.72
+44.227.217.144
+You share these IPs with the Weather API provider, and they whitelist them in their system.
+
+What Happens in Practice
+A user visits your website and searches for the weather in their city.
+
+Your backend (deployed on Render) sends a request to the Weather API to fetch the weather data.
+
+Request Example:
+
+javascript
+Copy code
+const axios = require('axios');
+
+async function fetchWeather(city) {
+    try {
+        const response = await axios.get(`https://api.weather.com/v1/cities/${city}`, {
+            headers: { 'Authorization': 'Bearer YOUR_API_KEY' },
+        });
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error fetching weather:', error);
+    }
+}
+
+fetchWeather('New York');
+Render routes the outgoing request through one of its public IP addresses (e.g., 100.20.92.101).
+
+The Weather API receives the request and checks the source IP address.
+
+How the Weather API Responds
+The API sees the request is coming from 100.20.92.101.
+It checks its whitelist:
+“Is 100.20.92.101 allowed?”
+Yes → The request is processed, and weather data is returned.
+No → The request is rejected, and your backend gets an error.
+Flow Visualization
+User Interaction:
+User → Sends request to your backend → Backend sends a request to the Weather API.
+
+Outgoing IP:
+Backend → Render’s outgoing IP (100.20.92.101) → Weather API.
+
+Verification and Response:
+Weather API → Verifies 100.20.92.101 is whitelisted → Returns weather data to the backend → Backend sends data to the user.
+
+
+
+ 

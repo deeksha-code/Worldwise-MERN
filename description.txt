@@ -27,3 +27,6 @@ Optimized Performance: Leveraged useCallback to prevent unnecessary re-renders o
 Lazy Loading: Improved application performance by implementing lazy loading for components like HomePage and Login, reducing initial load time and saving bandwidth. A <SpinnerFullPage /> was used as a loading indicator during component fetches.
 Interactive Maps: Integrated the React Leaflet library to enable users to interact with maps, providing panning, zooming, and exploration features.
 */
+
+backend
+1.implemented node mailer for verifying email
