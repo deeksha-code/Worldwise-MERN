@@ -1,0 +1,80 @@
+Here’s a **step-by-step guide** for accessing environment variables in **React with Vite**, **normal React apps**, and **Node.js**:
+
+---
+
+### **1. React App with Vite**
+   1. **Create an `.env` file** in the root of your project:
+      ```env
+      VITE_BASE_URL=https://your-api-url.com
+      ```
+
+   2. **Access variables** in your code:
+      ```javascript
+      console.log("Base URL:", import.meta.env.VITE_BASE_URL);
+      ```
+
+   3. **Rules**:
+      - Vite requires all environment variables to be prefixed with `VITE_`.
+
+   4. **Restart the dev server** after modifying `.env`:
+      ```bash
+      npm run dev
+      ```
+
+---
+
+### **2. Normal React App (using Create React App)**
+   1. **Create an `.env` file** in the root of your project:
+      ```env
+      REACT_APP_BASE_URL=https://your-api-url.com
+      ```
+
+   2. **Access variables** in your code:
+      ```javascript
+      console.log("Base URL:", process.env.REACT_APP_BASE_URL);
+      ```
+
+   3. **Rules**:
+      - Environment variables must be prefixed with `REACT_APP_`.
+
+   4. **Restart the dev server** after modifying `.env`:
+      ```bash
+      npm start
+      ```
+
+---
+
+### **3. Node.js**
+   1. **Install `dotenv` package**:
+      ```bash
+      npm install dotenv
+      ```
+
+   2. **Create an `.env` file** in the root of your project:
+      ```env
+      BASE_URL=https://your-api-url.com
+      ```
+
+   3. **Load and access variables** in your code:
+      ```javascript
+      require("dotenv").config();
+
+      console.log("Base URL:", process.env.BASE_URL);
+      ```
+
+   4. **Run your app**:
+      ```bash
+      node app.js
+      ```
+
+---
+
+### **General Notes**
+- **Do not commit `.env`** to version control. Add it to `.gitignore`:
+  ```plaintext
+  # .gitignore
+  .env
+  ```
+- **Restart the dev server** after making changes to `.env`.
+
+These steps should work seamlessly for your projects. Let me know if you face any issues!

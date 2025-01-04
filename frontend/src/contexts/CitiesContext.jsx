@@ -1,7 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
 
-const BASE_URL = "http://localhost:8000";
-
+console.log("base url",import.meta.env.VITE_BASE_URL);
 const CitiesContext = createContext();
 
 const initialState = {
@@ -72,7 +71,7 @@ function CitiesProvider({ children }) {
       dispatch({ type: "loading" });
 
       try {
-        const res = await fetch(`${BASE_URL}/cities`);
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities`);
         const data = await res.json();
         dispatch({ type: "cities/loaded", payload: data });
       } catch (error) {
@@ -92,7 +91,7 @@ function CitiesProvider({ children }) {
 //    if (Number(id) === currentCity.id) return;
 //    dispatch({ type: "loading" });
 //    try {
-//      const res = await fetch(`${BASE_URL}/cities/${id}`);
+//      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities/${id}`);
 //      const data = await res.json();
 //      dispatch({ type: "city/loaded", payload: data });
 //    } catch (error) {
@@ -108,7 +107,7 @@ function CitiesProvider({ children }) {
    if (Number(id) === currentCity.id) return;
    dispatch({ type: "loading" });
    try {
-     const res = await fetch(`${BASE_URL}/cities/${id}`);
+     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities/${id}`);
      const data = await res.json();
      dispatch({ type: "city/loaded", payload: data });
    } catch (error) {
@@ -122,7 +121,7 @@ function CitiesProvider({ children }) {
   async function createCity(newCity) {
     dispatch({ type: "loading" });
     try {
-      const res = await fetch(`${BASE_URL}/cities`, {
+      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities`, {
         method: "POST",
         body: JSON.stringify(newCity),
         headers: {
@@ -143,7 +142,7 @@ function CitiesProvider({ children }) {
   async function deleteCity(id) {
     dispatch({ type: "loading" });
     try {
-      await fetch(`${BASE_URL}/cities/${id}`, {
+      await fetch(`${import.meta.env.VITE_BASE_URL}/cities/${id}`, {
         method: "DELETE",
       });
       dispatch({ type: "city/deleted", payload: id });
