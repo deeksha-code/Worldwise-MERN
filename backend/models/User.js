@@ -12,7 +12,7 @@ const citySchema = new Schema({
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
   },
-  id: { type: String, required: true },
+  // id: { type: String, required: true },
 });
 
 // Define the main user schema
@@ -22,6 +22,7 @@ const userSchema = new Schema(
     lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    isVerified: { type: Boolean, default: false }, // Add isVerified field with default false
     cities: { type: [citySchema], default: [] }, // Allow cities to be an empty array by default
   },
   {
@@ -29,7 +30,4 @@ const userSchema = new Schema(
   }
 );
 
-// Create the user model
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);

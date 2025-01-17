@@ -6,15 +6,28 @@ import { useCities } from '../contexts/CitiesContext';
 
 
 function CityList() {
-  const {cities,isLoading}=useCities();
-  if(isLoading){
-    return <Spinner/>
+  const { cities, isLoading } = useCities();
+
+  // console.log("Cities in CityList:", cities);
+
+  if (isLoading) {
+    return <Spinner />;
   }
 
-  if(!cities.length) return <Message message="Add your first city by clicking on a city on the map"/>
-  return <ul className={styles.cityList}>
-    {cities.map(city=><CityItem city={city} key={city.id}/>)}
-  </ul>;
-}
+  if (!cities.length) {
+    return (
+      <Message message="Add your first city by clicking on a city on the map" />
+    );
+  }
 
+  return (
+    <ul className={styles.cityList}>
+      {cities.map((city) => {
+        // console.log("Mapping city:", city);
+        return <CityItem city={city} key={city._id} />;
+      })}
+    </ul>
+  );
+}
 export default CityList;
+

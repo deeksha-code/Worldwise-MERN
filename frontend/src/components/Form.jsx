@@ -47,7 +47,7 @@ function Form() {
             `${BASE_URL}?latitude=${lat}&longitude=${lng}`
           );
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           if (!data.countryCode)
             throw new Error(
               "That doesn't seem to be a city.click somewhere else 😑"
@@ -67,7 +67,7 @@ function Form() {
   );
 
   async function handleSubmit(e) {
-    console.log("submit button clicked");
+    // console.log("submit button clicked");
 
     e.preventDefault();
     // if(!cityName || !date) return;
@@ -80,7 +80,7 @@ function Form() {
       position: { lat, lng },
     };
 
-    console.log("newCity", newCity);
+    // console.log("newCity", newCity);
     await createCity(newCity);
     navigate("/app/cities")
   }

@@ -24,3 +24,62 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.passwordInput {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.passwordInput input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1.6rem;
+}
+
+.passwordInput button {
+  position: absolute;
+  left: 18rem;
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.passwordInput button:hover {
+  color: #0056b3;
+}
+
+.forgotPassword {
+  color: #007bff; /* Set the link color to blue */
+  font-size: 1.5rem; /* Adjust font size for better readability */
+  text-decoration: none; /* Remove underline by default */
+  margin-top: 1rem; /* Space between the password input and the link */
+  align-self: flex-start; /* Align the link to the left */
+}
+
+.forgotPassword:hover {
+  text-decoration: underline; /* Underline the link on hover */
+  color: #0056b3; /* Darken the link color on hover */
+}
+
+.linkContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.registerLink {
+  color: #007bff; /* Set the link color to blue */
+  font-size: 1.5rem; /* Adjust font size for better readability */
+  text-decoration: none; /* Remove underline by default */
+}
+
+.registerLink:hover {
+  text-decoration: underline; /* Underline the link on hover */
+  color: #0056b3; /* Darken the link color on hover */
+}

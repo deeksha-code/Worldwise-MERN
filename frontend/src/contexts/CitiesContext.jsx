@@ -1,6 +1,14 @@
-import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
+import axios from "axios";
+import { useAuth } from "../contexts/FakeAuthContext";
 
-console.log("base url",import.meta.env.VITE_BASE_URL);
+// console.log("base url", import.meta.env.VITE_BACKEND_URL);
 const CitiesContext = createContext();
 
 const initialState = {
@@ -35,45 +43,101 @@ function reducer(state, action) {
         isLoading: false,
         cities: [...state.cities, action.payload],
       };
-
     case "city/deleted":
       return {
         ...state,
         isLoading: false,
-        cities: state.cities.filter((city) => city.id !== action.payload),
-        currentCity:action.payload,
+        cities: state.cities.filter((city) => city._id !== action.payload),
+        currentCity: action.payload,
       };
-
     case "rejected":
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       };
-
     default:
       throw new Error("unknown action type");
   }
 }
 
 function CitiesProvider({ children }) {
-  // const [state,dispatch]=useReducer(reducer,initialState)
-  const [{ cities, isLoading, currentCity,error}, dispatch] = useReducer(
+  const { user } = useAuth(); // Get user from AuthContext
+  const userId = user?.id;
+  const [{ cities, isLoading, currentCity, error }, dispatch] = useReducer(
     reducer,
     initialState
   );
-  // const [cities, setCities] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [currentCity, setCurrentCity] = useState({});
+  // console.log("cities", cities);
 
-  useEffect(function () {
+  // Retrieve userId from session storage
+  // const userId = sessionStorage.getItem("user")
+  //   ? JSON.parse(sessionStorage.getItem("user")).id
+  //   : null;
+
+  // useEffect(
+  //   function () {
+  //     if (!userId) return; // Only fetch if userId is available
+
+  //     async function fetchCitiesList() {
+  //       dispatch({ type: "loading" });
+
+  //       try {
+  //         const res = await axios.get(
+  //           `${import.meta.env.VITE_BACKEND_URL}/api/user/cities`,
+  //           {
+  //             params: { userId }, // Add userId to the request
+  //           }
+  //         );
+  //         dispatch({ type: "cities/loaded", payload: res.data });
+  //       } catch (error) {
+  //         dispatch({
+  //           type: "rejected",
+  //           payload: "There was an error loading cities..",
+  //         });
+  //       }
+  //     }
+
+  //     fetchCitiesList(); // Call the async function
+  //   },
+  //   [userId]
+  // );
+
+  // useEffect(() => {
+  //   if (!userId) return; // Only fetch if userId is available
+
+  //   async function fetchCitiesList() {
+  //     dispatch({ type: "loading" });
+
+  //     try {
+  //       const res = await axios.get(
+  //         `${import.meta.env.VITE_BACKEND_URL}/api/user/cities`,
+  //         {
+  //           params: { userId },
+  //         }
+  //       );
+  //       dispatch({ type: "cities/loaded", payload: res.data });
+  //     } catch (error) {
+  //       dispatch({
+  //         type: "rejected",
+  //         payload: "There was an error loading cities..",
+  //       });
+  //     }
+  //   }
+
+  //   fetchCitiesList();
+  // }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
     async function fetchCitiesList() {
       dispatch({ type: "loading" });
-
       try {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities`);
-        const data = await res.json();
-        dispatch({ type: "cities/loaded", payload: data });
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/cities`,
+          { params: { userId } }
+        );
+        dispatch({ type: "cities/loaded", payload: res.data });
       } catch (error) {
         dispatch({
           type: "rejected",
@@ -81,56 +145,48 @@ function CitiesProvider({ children }) {
         });
       }
     }
+    fetchCitiesList();
+  }, [userId]);
 
-    fetchCitiesList(); // Call the async function
-  }, []); // Empty dependency array to run the effect only once
-
-
-  //without using callback
-//   (async function getCity(id) {
-//    if (Number(id) === currentCity.id) return;
-//    dispatch({ type: "loading" });
-//    try {
-//      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities/${id}`);
-//      const data = await res.json();
-//      dispatch({ type: "city/loaded", payload: data });
-//    } catch (error) {
-//      dispatch({
-//        type: "rejected",
-//        payload: "There was an error loading city..",
-//      });
-//    }
-//  }
-
-//using usecallBack
- const getCity = useCallback(async function getCity(id) {
-   if (Number(id) === currentCity.id) return;
-   dispatch({ type: "loading" });
-   try {
-     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities/${id}`);
-     const data = await res.json();
-     dispatch({ type: "city/loaded", payload: data });
-   } catch (error) {
-     dispatch({
-       type: "rejected",
-       payload: "There was an error loading city..",
-     });
-   }
- }, [currentCity.id]);
+  const getCity = useCallback(
+    async function getCity(id) {
+      // console.log(" city id", id);
+      if (Number(id) === currentCity.id) return;
+      dispatch({ type: "loading" });
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/city/${id}`,
+          {
+            params: { userId }, // Add userId to the request
+          }
+        );
+        // console.log("res data", res.data);
+        dispatch({ type: "city/loaded", payload: res.data });
+      } catch (error) {
+        dispatch({
+          type: "rejected",
+          payload: "There was an error loading city..",
+        });
+      }
+    },
+    [currentCity.id, userId]
+  );
 
   async function createCity(newCity) {
     dispatch({ type: "loading" });
     try {
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/cities`, {
-        method: "POST",
-        body: JSON.stringify(newCity),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      console.log("newly added city", data);
-      dispatch({ type: "city/created", payload: data });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/city`,
+        newCity,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          params: { userId }, // Add userId to the request
+        }
+      );
+      // console.log("response data", res.data.city);
+      dispatch({ type: "city/created", payload: res.data.city });
     } catch (error) {
       dispatch({
         type: "rejected",
@@ -142,9 +198,15 @@ function CitiesProvider({ children }) {
   async function deleteCity(id) {
     dispatch({ type: "loading" });
     try {
-      await fetch(`${import.meta.env.VITE_BASE_URL}/cities/${id}`, {
-        method: "DELETE",
-      });
+      // console.log(" delete city id", id);
+      // console.log("cities",cities);
+      const data = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/city/${id}`,
+        {
+          params: { userId }, // Add userId to the request
+        }
+      );
+      // console.log("deleted data", data);
       dispatch({ type: "city/deleted", payload: id });
     } catch (error) {
       dispatch({
@@ -174,7 +236,7 @@ function CitiesProvider({ children }) {
 function useCities() {
   const context = useContext(CitiesContext);
   if (context === undefined)
-    throw new Error("PostContext was used outside of the Post Provider");
+    throw new Error("CitiesContext was used outside of the Cities Provider");
   return context;
 }
 

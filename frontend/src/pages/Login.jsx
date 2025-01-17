@@ -2,23 +2,22 @@ import { useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import PageNav from "../components/PageNav";
 import { useAuth } from "../contexts/FakeAuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Button from "../components/Button";
 
 export default function Login() {
   const navigate = useNavigate();
-  // PRE-FILL FOR DEV PURPOSES
-  const [email, setEmail] = useState("deeksha@example.com");
-  const [password, setPassword] = useState("qwerty");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const {isAuthenticated, login } = useAuth();
-  // console.log("login", login);
+  const { isAuthenticated, login } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/app",{replace:true});
+      navigate("/app", { replace: true });
     }
-  }, [isAuthenticated,navigate]);
+  }, [isAuthenticated, navigate]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,10 +29,7 @@ export default function Login() {
   return (
     <main className={styles.login}>
       <PageNav />
-      <form
-        className={styles.form}
-        onSubmit={handleSubmit}
-      >
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label htmlFor="email">Email address</label>
           <input
@@ -41,17 +37,39 @@ export default function Login() {
             id="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            required
           />
         </div>
 
         <div className={styles.row}>
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
+          <div className={styles.passwordInput}>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              autoComplete="current-password"
+              required
+            />
+            {password && ( // Conditionally render the button only when password has text
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.linkContainer}>
+          <Link to="/forgot-password" className={styles.forgotPassword}>
+            Forgot Password?
+          </Link>
+          <Link to="/register" className={styles.registerLink}>
+            Not registered? Register here
+          </Link>
         </div>
 
         <div>

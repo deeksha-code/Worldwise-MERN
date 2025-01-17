@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("dotenv").config();
 const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
@@ -19,6 +20,12 @@ mongoose
   });
 
 //middlewares
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow your frontend's origin
+    credentials: true, // Allow cookies and headers if needed
+  })
+);
 app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

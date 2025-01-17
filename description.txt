@@ -29,4 +29,5 @@ Interactive Maps: Integrated the React Leaflet library to enable users to intera
 */
 
 backend
-1.implemented node mailer for verifying email
+1.implemented node mailer for verifying email,resetting password
+2.mongodb consists of two collections verify tokens where the tokens will be stored upon sending mail and user collection where user details will be stored along with the cities visited

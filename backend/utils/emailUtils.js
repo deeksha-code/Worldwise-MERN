@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 // Function to send verification email
-const sendVerificationEmail = async (email, verificationUrl) => {
+const sendVerificationEmail = async (email, subject,text) => {
   const transporter = nodemailer.createTransport({
     service: "gmail", // You can change this to your email service
     auth: {
@@ -14,10 +14,10 @@ const sendVerificationEmail = async (email, verificationUrl) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: "worldwise",
     to: email,
-    subject: "Email Verification",
-    text: `Please verify your email by clicking on the following link: ${verificationUrl}`,
+    subject: subject,
+    text: text,
   };
 
   try {

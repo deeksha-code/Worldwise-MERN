@@ -1,0 +1,36 @@
+.verifyEmail {
+  margin: 2.5rem;
+  padding: 2.5rem;
+  background-color: var(--color-dark--1);
+  min-height: calc(100vh - 5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.messageContainer {
+  text-align: center;
+  background-color: var(--color-dark--2);
+  padding: 2rem 3rem;
+  border-radius: 7px;
+}
+
+.messageContainer p {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.loginLink {
+  color: #00c46a;
+  font-size: 1.6rem;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid #00c46a;
+  border-radius: 4px;
+}
+
+.loginLink:hover {
+  background-color: #00c46a;
+  color: #fff;
+}

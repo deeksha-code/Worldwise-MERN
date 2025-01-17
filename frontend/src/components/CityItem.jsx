@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import styles from './CityItem.module.css'
-import { useCities } from '../contexts/CitiesContext';
+import { Link } from "react-router-dom";
+import styles from "./CityItem.module.css";
+import { useCities } from "../contexts/CitiesContext";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -10,31 +10,35 @@ const formatDate = (date) =>
     weekday: "long",
   }).format(new Date(date));
 
-function CityItem({city}) {
-  const {currentCity,deleteCity}=useCities();
-    const {cityName,emoji,date,id,position}=city;
+function CityItem({ city }) {
+  const { currentCity, deleteCity } = useCities();
+  // console.log("current city", currentCity);
+  // console.log("city", city);
+  const { cityName, emoji, date, _id, position} = city;
+ 
+  function handleClick(e) {
+    e.preventDefault();
+    deleteCity(_id);
+  }
 
-    function handleClick(e){  
-        e.preventDefault();
-        deleteCity(id)
-        console.log("test");
-        
-    }
+  return (
+    <li>
+      <Link
+        className={`${styles.cityItem} ${
+          currentCity._id === _id ? styles["cityItem--active"] : ""
+        }`}
+        to={`${_id}?lat=${position.lat}&lng=${position.lng}`}
+      >
+        <span className={styles.emoji}>{emoji}</span>
+        <h3 className={styles.name}>{cityName}</h3>
+        <time className={styles.date}>({formatDate(date)})</time>
 
-    return (
-      <li>
-        <Link
-          className={`${styles.cityItem} ${currentCity.id===id?styles["cityItem--active"]:""}`}
-          to={`${id}?lat=${position.lat}&lng=${position.lng}`}
-        >
-          <span className={styles.emoji}>{emoji}</span>
-          <h3 className={styles.name}>{cityName}</h3>
-          <time className={styles.date}>({formatDate(date)})</time>
-
-          <button className={styles.deleteBtn} onClick={handleClick}>&times;</button>
-        </Link>
-      </li>
-    );
+        <button className={styles.deleteBtn} onClick={handleClick}>
+          &times;
+        </button>
+      </Link>
+    </li>
+  );
 }
 
-export default CityItem
+export default CityItem;

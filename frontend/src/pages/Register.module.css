@@ -1,0 +1,72 @@
+.register {
+  margin: 2.5rem;
+  padding: 2.5rem 5rem;
+  background-color: var(--color-dark--1);
+  min-height: calc(100vh - 5rem);
+}
+
+.form {
+  background-color: var(--color-dark--2);
+  border-radius: 7px;
+  padding: 2rem 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 48rem;
+  margin: 8rem auto;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.passwordInput {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.passwordInput input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1.6rem;
+}
+
+.passwordInput button {
+  position: absolute;
+  left: 18rem;
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.passwordInput button:hover {
+  color: #0056b3;
+}
+
+.error {
+  color: #ff0000;
+  font-size: 1.4rem;
+}
+
+.linkContainer {
+  margin-top: 1rem;
+}
+
+.loginLink {
+  color: #007bff;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.loginLink:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}

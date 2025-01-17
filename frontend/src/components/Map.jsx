@@ -27,7 +27,7 @@ function Map() {
 
   useEffect(
     function () {
-      console.log("lat and longitude changed");
+      // console.log("lat and longitude changed");
 
       if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
     },
