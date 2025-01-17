@@ -22,7 +22,7 @@ mongoose
 //middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow your frontend's origin
+    origin: process.env.CLIENT_URL, // Allow your frontend's origin
     credentials: true, // Allow cookies and headers if needed
   })
 );
